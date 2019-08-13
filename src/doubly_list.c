@@ -13,26 +13,16 @@
 **   limitations under the License.
 */
 
-#ifndef DOUBLY_LIST_HEADER
-#define DOUBLY_LIST_HEADER
+#include <stdlib.h>
 
-#include <stddef.h>
+#include "./include/doubly_list.h"
 
-struct DNode {
-  void *data;
-  struct DNode *next;
-  struct DNode *prev;
-};
-
-typedef struct DLinkedList {
-  struct DNode *head;
-  struct DNode *tail;
-
-  size_t size;
-  void (*destructor)(void *data);
-} DLinkedList;
-
-void dlist_create(DLinkedList *list, void (*destroyer)(void *data));
+void dlist_create(DLinkedList *list, void (*destroyer)(void *data)) {
+  list->head = NULL;
+  list->tail = NULL;
+  list->size = 0;
+  list->destructor = destroyer;
+}
 void dlist_destroy(DLinkedList *list);
 
 void dlist_insert_front(DLinkedList *list, void *data);
@@ -42,5 +32,3 @@ void dlist_insert_next(DLinkedList *list, struct DNode *node, void *data);
 void dlist_remove_back(DLinkedList *list);
 void dlist_remove_front(DLinkedList *list);
 void dlist_remove_next(DLinkedList *list, struct DNode *node);
-
-#endif

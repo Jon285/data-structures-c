@@ -43,8 +43,8 @@ void *list_remove_front(LinkedList *list);
 void *list_remove_back(LinkedList *list);
 void *list_remove_next(LinkedList *list, struct SNode *node);
 
-inline size_t list_size(LinkedList *list) { return list->size; }
-inline struct SNode *list_head(LinkedList *list) { return list->head; }
-inline struct SNode *list_tail(LinkedList *list) { return list->tail; }
+/* inline size_t list_size(LinkedList *list) { return list->size; } */
+/* inline struct SNode *list_head(LinkedList *list) { return list->head; } */
+/* inline struct SNode *list_tail(LinkedList *list) { return list->tail; } */
 
 #endif

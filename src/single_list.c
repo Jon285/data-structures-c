@@ -76,8 +76,33 @@ void *list_remove_front(LinkedList *list) {
   return data;
 }
 
-// TODO
-void *list_remove_back(LinkedList *list) { return NULL; }
+void *list_remove_back(LinkedList *list) {
+  struct SNode *current = list->head;
+
+  if (current->next == NULL) {
+    void *data = current->data;
+    free(current);
+
+    list->head = NULL;
+    list->tail = NULL;
+    list->size--;
+
+    return data;
+  }
+
+  while (current->next->next != NULL)
+    current = current->next;
+
+  struct SNode *rem_node = current->next;
+  void *data = rem_node->data;
+
+  list->tail = current;
+  list->size--;
+
+  free(rem_node);
+  return data;
+}
+
 void *list_remove_next(LinkedList *list, struct SNode *node) {
   if (node->next == NULL)
     return NULL;
