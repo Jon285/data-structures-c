@@ -41,6 +41,9 @@ void list_insert_front(LinkedList *list, void *data) {
   new_node->next = list->head;
   list->head = new_node;
 
+  if (list->size == 0)
+    list->tail = new_node;
+
   list->size++;
 }
 
@@ -49,7 +52,10 @@ void list_insert_back(LinkedList *list, void *data) {
 
   new_node->data = data;
   new_node->next = NULL;
-  list->tail->next = new_node;
+
+  if (list->size != 0)
+    list->tail->next = new_node;
+
   list->tail = new_node;
 
   list->size++;
