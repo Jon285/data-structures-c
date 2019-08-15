@@ -39,9 +39,9 @@ void list_insert_front(LinkedList *list, void *data);
 void list_insert_back(LinkedList *list, void *data);
 void list_insert_next(LinkedList *list, struct SNode *node, void *data);
 
-void *list_remove_front(LinkedList *list);
-void *list_remove_back(LinkedList *list);
-void *list_remove_next(LinkedList *list, struct SNode *node);
+void list_remove_front(LinkedList *list, void **data_save);
+void list_remove_back(LinkedList *list, void **data_save);
+void list_remove_next(LinkedList *list, struct SNode *node, void **data_save);
 
 /* inline size_t list_size(LinkedList *list) { return list->size; } */
 /* inline struct SNode *list_head(LinkedList *list) { return list->head; } */

@@ -39,8 +39,8 @@ void dlist_insert_front(DLinkedList *list, void *data);
 void dlist_insert_back(DLinkedList *list, void *data);
 void dlist_insert_next(DLinkedList *list, struct DNode *node, void *data);
 
-void *dlist_remove_back(DLinkedList *list);
-void *dlist_remove_front(DLinkedList *list);
-void *dlist_remove_next(DLinkedList *list, struct DNode *node);
+void dlist_remove_back(DLinkedList *list, void **data_save);
+void dlist_remove_front(DLinkedList *list, void **data_save);
+void dlist_remove_next(DLinkedList *list, struct DNode *node, void **data_save);
 
 #endif

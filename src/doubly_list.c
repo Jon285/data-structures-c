@@ -66,6 +66,7 @@ void dlist_insert_back(DLinkedList *list, void *data) {
   list->tail = new_node;
   list->size++;
 }
+
 void dlist_insert_next(DLinkedList *list, struct DNode *node, void *data) {
   struct DNode *new_node = malloc(sizeof(struct DNode));
 
@@ -78,53 +79,65 @@ void dlist_insert_next(DLinkedList *list, struct DNode *node, void *data) {
   list->size++;
 }
 
-void *dlist_remove_back(DLinkedList *list) {
+void dlist_remove_back(DLinkedList *list, void **data_save) {
   struct DNode *rem_node = list->tail;
 
   if (rem_node == NULL)
-    return NULL;
+    return;
 
-  rem_node->prev->next = NULL;
+  if (rem_node->prev != NULL)
+    rem_node->prev->next = NULL;
+  else
+    list->head = NULL;
   list->tail = rem_node->prev;
 
-  void *data = rem_node->data;
+  if (data_save != NULL)
+    *data_save = rem_node->data;
+  else if (list->destructor != NULL)
+    list->destructor(rem_node->data);
 
   free(rem_node);
   list->size--;
-
-  return data;
 }
 
-void *dlist_remove_front(DLinkedList *list) {
+void dlist_remove_front(DLinkedList *list, void **data_save) {
   struct DNode *rem_node = list->head;
 
   if (rem_node == NULL)
-    return NULL;
+    return;
 
-  rem_node->next->prev = NULL;
+  if (rem_node->next != NULL)
+    rem_node->next->prev = NULL;
+  else
+    list->tail = NULL;
   list->head = rem_node->next;
 
-  void *data = rem_node->data;
+  if (data_save != NULL)
+    *data_save = rem_node->data;
+  else if (list->destructor != NULL)
+    list->destructor(rem_node->data);
 
   free(rem_node);
   list->size--;
-
-  return data;
 }
 
-void *dlist_remove_next(DLinkedList *list, struct DNode *node) {
+void dlist_remove_next(DLinkedList *list, struct DNode *node,
+                       void **data_save) {
   struct DNode *rem_node = node->next;
 
   if (rem_node == NULL)
-    return NULL;
+    return;
 
   rem_node->next->prev = node;
   node->next = rem_node->next;
 
-  void *data = rem_node->data;
+  if (data_save != NULL)
+    *data_save = rem_node->data;
+  else if (list->destructor != NULL)
+    list->destructor(rem_node->data);
 
   free(rem_node);
   list->size--;
 
-  return data;
+  return;
 }
