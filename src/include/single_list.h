@@ -13,7 +13,7 @@
 **   limitations under the License.
 */
 
-#ifndef SINLGE_LIST_HEADER
+#ifndef SINGLE_LIST_HEADER
 #define SINGLE_LIST_HEADER
 
 #include <stddef.h>

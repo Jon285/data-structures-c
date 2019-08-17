@@ -25,8 +25,8 @@ void list_init(LinkedList *list, void (*destruct)(void *data)) {
 }
 
 void list_destroy(LinkedList *list) {
-  while (list->size > 0) {
-    list_remove_back(list, NULL);
+  while (list->head != NULL) {
+    list_remove_front(list, NULL);
   }
 }
 
@@ -49,7 +49,10 @@ void list_insert_back(LinkedList *list, void *data) {
   new_node->data = data;
   new_node->next = NULL;
 
-  if (list->size != 0)
+  // deal with an empty list
+  if (list->size == 0)
+    list->head = new_node;
+  else
     list->tail->next = new_node;
 
   list->tail = new_node;
@@ -68,6 +71,9 @@ void list_insert_next(LinkedList *list, struct SNode *node, void *data) {
 }
 
 void list_remove_front(LinkedList *list, void **data_save) {
+  if (list->head == NULL)
+    return;
+
   struct SNode *rem_node = list->head;
 
   if (data_save != NULL)
@@ -83,6 +89,9 @@ void list_remove_front(LinkedList *list, void **data_save) {
 }
 
 void list_remove_back(LinkedList *list, void **data_save) {
+  if (list->tail == NULL)
+    return;
+
   struct SNode *current = list->head;
 
   if (current->next == NULL) {
@@ -101,7 +110,7 @@ void list_remove_back(LinkedList *list, void **data_save) {
     return;
   }
 
-  while (current->next->next != NULL)
+  while (current->next != list->tail)
     current = current->next;
 
   struct SNode *rem_node = current->next;
@@ -111,10 +120,10 @@ void list_remove_back(LinkedList *list, void **data_save) {
   else if (list->destructor != NULL)
     list->destructor(rem_node->data);
 
+  free(rem_node);
+
   list->tail = current;
   list->size--;
-
-  free(rem_node);
 }
 
 void list_remove_next(LinkedList *list, struct SNode *node, void **data_save) {

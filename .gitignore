@@ -50,3 +50,11 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+# Doxygen stuff
+dox
+/html
+/latex
+
+# Dev tests
+/src/tests
