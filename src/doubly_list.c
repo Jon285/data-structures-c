@@ -23,13 +23,10 @@ void dlist_create(DLinkedList *list, void (*destroyer)(void *data)) {
   list->size = 0;
   list->destructor = destroyer;
 }
-void dlist_destroy(DLinkedList *list) {
-  void *data = NULL;
 
+void dlist_destroy(DLinkedList *list) {
   while (list->size > 0) {
-    data = dlist_remove_back(list);
-    if (list->destructor != NULL)
-      list->destructor(data);
+    dlist_remove_back(list, NULL);
   }
 }
 
@@ -70,11 +67,30 @@ void dlist_insert_back(DLinkedList *list, void *data) {
 void dlist_insert_next(DLinkedList *list, struct DNode *node, void *data) {
   struct DNode *new_node = malloc(sizeof(struct DNode));
 
+  if (new_node == NULL)
+    return;
+
   new_node->next = node->next;
   new_node->prev = node;
   new_node->data = data;
   node->next->prev = new_node;
   node->next = new_node;
+
+  list->size++;
+}
+
+void dlist_insert_before(DLinkedList *list, struct DNode *node, void *data) {
+  struct DNode *new_node = malloc(sizeof(struct DNode));
+
+  if (new_node == NULL)
+    return;
+
+  new_node->next = node;
+  new_node->prev = node->prev;
+  new_node->data = data;
+
+  node->prev->next = new_node;
+  node->prev = new_node;
 
   list->size++;
 }
@@ -128,8 +144,33 @@ void dlist_remove_next(DLinkedList *list, struct DNode *node,
   if (rem_node == NULL)
     return;
 
-  rem_node->next->prev = node;
+  if (rem_node->next != NULL)
+    rem_node->next->prev = node;
+
   node->next = rem_node->next;
+
+  if (data_save != NULL)
+    *data_save = rem_node->data;
+  else if (list->destructor != NULL)
+    list->destructor(rem_node->data);
+
+  free(rem_node);
+  list->size--;
+
+  return;
+}
+
+void dlist_remove_before(DLinkedList *list, struct DNode *node,
+                         void **data_save) {
+  struct DNode *rem_node = node->prev;
+
+  if (rem_node == NULL)
+    return;
+
+  if (rem_node->prev != NULL)
+    rem_node->prev->next = node;
+
+  node->prev = rem_node->prev;
 
   if (data_save != NULL)
     *data_save = rem_node->data;

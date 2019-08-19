@@ -33,6 +33,9 @@ void list_destroy(LinkedList *list) {
 void list_insert_front(LinkedList *list, void *data) {
   struct SNode *new_node = malloc(sizeof(struct SNode));
 
+  if (new_node == NULL)
+    return;
+
   new_node->data = data;
   new_node->next = list->head;
   list->head = new_node;
@@ -45,6 +48,9 @@ void list_insert_front(LinkedList *list, void *data) {
 
 void list_insert_back(LinkedList *list, void *data) {
   struct SNode *new_node = malloc(sizeof(struct SNode));
+
+  if (new_node == NULL)
+    return;
 
   new_node->data = data;
   new_node->next = NULL;
@@ -62,6 +68,9 @@ void list_insert_back(LinkedList *list, void *data) {
 
 void list_insert_next(LinkedList *list, struct SNode *node, void *data) {
   struct SNode *new_node = malloc(sizeof(struct SNode));
+
+  if (new_node == NULL)
+    return;
 
   new_node->data = data;
   new_node->next = node->next;
