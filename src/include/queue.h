@@ -13,27 +13,27 @@
 **   limitations under the License.
 */
 
-#ifndef STACK_HEADER
-#define STACK_HEADER
+#ifndef QUEUE_HEADER
+#define QUEUE_HEADER
 
 #include <stddef.h>
 
-struct StackNode {
+struct QueueNode {
   void *data;
-  struct StackNode *below;
+  struct QueueNode *prev;
 };
 
-typedef struct _Stack {
-  struct StackNode *top;
+typedef struct _Queue {
+  struct QueueNode *head;
+  struct QueueNode *tail;
 
   size_t size;
   void (*destructor)(void *data);
-} Stack;
+} Queue;
 
-void stack_init(Stack *stack, void (*destroy)(void *data));
-void stack_destroy(Stack *stack);
-void stack_push(Stack *stack, void *data);
-void *stack_pop(Stack *stack);
-void *stack_peek(Stack *stack);
+void queue_init(Queue *queue, void (*destroy)(void *data));
+void queue_destroy(Queue *queue);
+void queue_enqueue(Queue *queue, void *data);
+void queue_dequeue(Queue *queue, void **data);
 
 #endif

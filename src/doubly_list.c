@@ -30,10 +30,10 @@ void dlist_destroy(DLinkedList *list) {
   }
 }
 
-void dlist_insert_front(DLinkedList *list, void *data) {
+void dlist_insert_front(DLinkedList *list, const void *data) {
   struct DNode *new_node = malloc(sizeof(struct DNode));
 
-  new_node->data = data;
+  new_node->data = (void *)data;
   new_node->next = list->head;
   new_node->prev = NULL;
 
@@ -47,10 +47,10 @@ void dlist_insert_front(DLinkedList *list, void *data) {
   list->size++;
 }
 
-void dlist_insert_back(DLinkedList *list, void *data) {
+void dlist_insert_back(DLinkedList *list, const void *data) {
   struct DNode *new_node = malloc(sizeof(struct DNode));
 
-  new_node->data = data;
+  new_node->data = (void *)data;
   new_node->next = NULL;
   new_node->prev = list->tail;
 
@@ -64,7 +64,8 @@ void dlist_insert_back(DLinkedList *list, void *data) {
   list->size++;
 }
 
-void dlist_insert_next(DLinkedList *list, struct DNode *node, void *data) {
+void dlist_insert_next(DLinkedList *list, struct DNode *node,
+                       const void *data) {
   struct DNode *new_node = malloc(sizeof(struct DNode));
 
   if (new_node == NULL)
@@ -72,14 +73,15 @@ void dlist_insert_next(DLinkedList *list, struct DNode *node, void *data) {
 
   new_node->next = node->next;
   new_node->prev = node;
-  new_node->data = data;
+  new_node->data = (void *)data;
   node->next->prev = new_node;
   node->next = new_node;
 
   list->size++;
 }
 
-void dlist_insert_before(DLinkedList *list, struct DNode *node, void *data) {
+void dlist_insert_before(DLinkedList *list, struct DNode *node,
+                         const void *data) {
   struct DNode *new_node = malloc(sizeof(struct DNode));
 
   if (new_node == NULL)
@@ -87,7 +89,7 @@ void dlist_insert_before(DLinkedList *list, struct DNode *node, void *data) {
 
   new_node->next = node;
   new_node->prev = node->prev;
-  new_node->data = data;
+  new_node->data = (void *)data;
 
   node->prev->next = new_node;
   node->prev = new_node;
