@@ -27,7 +27,7 @@ void stack_destroy(Stack *stack) {
   void *data = NULL;
 
   while (stack->size != 0) {
-    stack_pop(stack);
+    data = stack_pop(stack);
 
     if (stack->destructor != NULL)
       stack->destructor(data);
@@ -58,4 +58,4 @@ void *stack_pop(Stack *stack) {
   return data_ret;
 }
 
-void *stack_peek(Stack *stack) { return stack->top->data; }
+void *stack_peek(Stack *stack) { return stack->top ? stack->top->data : NULL; }
